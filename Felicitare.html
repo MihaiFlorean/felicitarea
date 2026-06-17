@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>NEURAL SECURITY TERMINAL</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: #00ff66;
+    font-family: "Courier New", monospace;
+    overflow: hidden;
+}
+
+/* TERMINAL */
+#terminal {
+    padding: 20px;
+    height: 120vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+/* CURSOR */
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: #00ff66;
+    margin-left: 2px;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* PROGRESS BAR */
+#barContainer {
+    width: 80%;
+    margin: 10px 0;
+    border: 1px solid #00ff66;
+}
+
+#bar {
+    width: 0%;
+    height: 18px;
+    background: #00ff66;
+}
+
+/* FINAL GLITCH */
+.glitch {
+    animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 2px 0 red, -2px 0 blue; }
+    50% { text-shadow: -2px 0 red, 2px 0 blue; }
+    100% { text-shadow: 2px 2px red, -2px -2px blue; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="terminal"></div>
+
+<script>
+
+const terminal = document.getElementById("terminal");
+
+let lines = [
+"[BOOT] Neural security system starting...",
+"[OK] Loading physics engine...",
+"[OK] Loading informatics core...",
+"[OK] Building cognitive model...",
+"[SCAN] User: Vadim Bețișor",
+"[SCAN] Role: Director Adjunct",
+"[SCAN] Expertise: Physics / Computer Science",
+"[SYSTEM] Running deep validation...",
+""
+];
+
+let i = 0;
+
+/* TYPE CHARACTER BY CHARACTER */
+function typeLine(text, callback) {
+
+    let j = 0;
+    let line = document.createElement("div");
+    terminal.appendChild(line);
+
+    let interval = setInterval(() => {
+
+        line.innerHTML += text[j];
+        j++;
+
+        terminal.scrollTop = terminal.scrollHeight;
+
+        if (j >= text.length) {
+            clearInterval(interval);
+            terminal.innerHTML += "\n";
+            if (callback) callback();
+        }
+
+    }, 25);
+}
+
+/* RUN LINES */
+function runLines() {
+
+    if (i < lines.length) {
+        typeLine(lines[i], () => {
+            i++;
+            runLines();
+        });
+    } else {
+        startScan();
+    }
+}
+
+/* FAKE SCAN + PROGRESS BAR */
+function startScan() {
+
+    let container = document.createElement("div");
+
+    container.innerHTML = `
+        [BREACH ANALYSIS INITIATED]<br><br>
+        <div id="barContainer">
+            <div id="bar"></div>
+        </div>
+        <span>Analyzing cognitive patterns...</span>
+    `;
+
+    terminal.appendChild(container);
+
+    let bar = document.getElementById("bar");
+    let progress = 0;
+
+    let scan = setInterval(() => {
+        progress += 2;
+        bar.style.width = progress + "%";
+        terminal.scrollTop = terminal.scrollHeight;
+
+        if (progress >= 100) {
+            clearInterval(scan);
+            unlock();
+        }
+
+    }, 40);
+}
+
+/* FINAL MESSAGE */
+function unlock() {
+
+    terminal.classList.add("glitch");
+
+    let msg = `
+========================================
+SYSTEM OVERRIDE SUCCESSFUL
+========================================
+
+🎉 ACCES CONCEDEAT
+
+Stimate domnule Vadim Bețișor,
+
+Sistemul confirmă nivel avansat în Management, Fizică și Informatică.
+
+Vă mulțumim pentru profesionalism, claritate și implicare constantă.
+
+Sunteți un pilon important în educația modernă.
+
+LA MULȚI ANI din partea familiei Florean!
+
+========================================
+[CONNECTION CLOSED]
+`;
+
+    typeLine(msg);
+}
+
+/* START */
+runLines();
+
+</script>
+
+</body>
+</html>
